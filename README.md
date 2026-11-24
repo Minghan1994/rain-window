@@ -9,15 +9,43 @@ A single-file web toy: a rainy forest drifts past outside, and the glass is cove
 ## Controls
 
 - Hover the glass pill at the top to open the controls: four weather presets (Mist, Drizzle, Rain, Storm) and dot meters for rain amount, volume and birds & insects. Tap it on touch screens.
-- Click anywhere else: sound on/off
+- Click anywhere else, or `S`: sound on/off
 - `↑` `↓`: more / less rain
 - `F`: fullscreen
 
 Settings are remembered in the browser.
 
+## Run it locally
+
+Plain JavaScript modules, no build step and no dependencies. Browsers only load modules over HTTP, so serve the folder:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open http://localhost:8000.
+
+## Project layout
+
+| File | What it does |
+|---|---|
+| [`src/config.js`](src/config.js) | Every tunable number: physics constants, weather presets, and the values that follow the rain amount |
+| [`src/main.js`](src/main.js) | Startup, resizing and the frame loop |
+| [`src/scene.js`](src/scene.js) | The forest outside, the rain curtain and the car's speed |
+| [`src/drops.js`](src/drops.js) | Drop physics: sliding, merging, trails, wind, evaporation |
+| [`src/water.js`](src/water.js) | Stamps drops and droplets into the water map |
+| [`src/spray.js`](src/spray.js) | Road spray on the glass and how drops wipe it |
+| [`src/weather.js`](src/weather.js) | Storm level, gusts and lightning |
+| [`src/renderer.js`](src/renderer.js) | The WebGL shader that composites everything |
+| [`src/audio.js`](src/audio.js) | Synthesized rain, road, drips, thunder, crickets and birds |
+| [`src/ui.js`](src/ui.js) | The control widget, keyboard shortcuts and saved settings |
+| [`src/state.js`](src/state.js) | Shared state and small helpers |
+
+To change how the rain behaves, start with `src/config.js`.
+
 ## How it works
 
-Everything is in [`index.html`](index.html): plain JavaScript, Canvas 2D and one WebGL shader, no build step, no images, no audio files.
+No images, no audio files: everything is drawn and synthesized in code with Canvas 2D, one WebGL shader and the Web Audio API.
 
 **Rendering**
 
